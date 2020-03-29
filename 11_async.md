@@ -515,9 +515,8 @@ function request(nest, target, type, content) {
 
 Because promises can be resolved (or rejected) only once, this will
 work. The first time `resolve` or `reject` is called determines the
-outcome of the promise, and any further calls, such as the timeout
-arriving after the request finishes or a request coming back after
-another request finished, are ignored.
+outcome of the promise, and further calls caused by a request coming
+back after another request finished are ignored.
 
 {{index recursion}}
 
@@ -526,13 +525,13 @@ recursive function—a regular loop doesn't allow us to stop and wait
 for an asynchronous action. The `attempt` function makes a single
 attempt to send a request. It also sets a timeout that, if no response
 has come back after 250 milliseconds, either starts the next attempt
-or, if this was the fourth attempt, rejects the promise with an
+or, if this was the third attempt, rejects the promise with an
 instance of `Timeout` as the reason.
 
 {{index idempotence}}
 
 Retrying every quarter-second and giving up when no response has come
-in after a second is definitely somewhat arbitrary. It is even
+in after three-quarter second is definitely somewhat arbitrary. It is even
 possible, if the request did come through but the handler is just
 taking a bit longer, for requests to be delivered multiple times.
 We'll write our handlers with that problem in mind—duplicate messages
